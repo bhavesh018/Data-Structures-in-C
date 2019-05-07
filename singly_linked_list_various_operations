@@ -1,0 +1,269 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+void insert_in_begining();
+//void delete_root();
+void delete_by_key_2(int);
+struct node
+{
+	int data;
+	struct node *next;
+	
+};
+
+struct node *root=NULL;
+int count=0;
+void append()
+{
+	struct node *temp;
+	temp = (struct node*)malloc(sizeof(struct node));
+	printf("Enter data\n");
+	scanf("%d",&temp->data);
+	temp->next = NULL;
+	if(root == NULL)
+	{
+		//printf("Inside root == null\n");
+		root = temp;
+	}
+	else
+	{
+		struct node *p = root;
+		while(p->next != NULL)
+		{
+			p = p->next;
+		}
+		p->next = temp;
+	}
+	count++;
+}
+
+void insert_between()
+{
+	int pos;
+	printf("Enter at what position you want to insert\n 1 for root ..... total+1 for last\n");
+	scanf("%d",&pos);
+	if(pos == 1)
+	{
+		insert_in_begining();
+		return;
+	}
+	else if(pos > (count+1))
+	{
+		printf("We have only %d elements\n",count);
+		return;
+	}
+	else if(pos <= 0)
+	{
+		printf("HaHa.... You might be kidding\n");
+		return;
+	}
+	else
+	{
+		struct node *temp;
+		struct node *p=root;
+		temp = (struct node*)malloc(sizeof(struct node));
+		printf("Enter element to insert at %d\n",pos);
+		scanf("%d",&temp->data);
+		temp->next = NULL;
+		int i=1;
+		while(i < (pos-1))
+		{
+			//printf("inside i < pos\n");
+			p = p->next;
+			i++;
+		}
+		//printf("value of p is  %d\n",p->data);
+		temp->next = p->next;
+		p->next = temp;
+		count++;
+	}
+}
+
+void insert_in_begining()
+{
+	//printf("wait...\n");
+	struct node *temp;
+	temp = (struct node*)malloc(sizeof(struct node));
+	printf("Enter element to be inserted at root i.e position 1\n");
+	scanf("%d",&temp->data);
+	temp->next = NULL;
+	if(root == NULL)
+	{
+		root = temp;	
+	}	
+	else
+	{
+		temp->next = root;
+		root = temp;
+	}
+	count++;
+}
+
+void delete_by_pos()
+{
+	if(root == NULL)
+	{
+		printf("No element to delete \n");
+		return;
+	}
+	else
+	{
+		int pos;
+		printf("Which position element you want to delete\n");
+		scanf("%d",&pos);
+		if(pos <= 0)
+		{
+			printf("HaHa... You might be kidding\n");
+		}
+		/*else if(pos == 1)
+		{
+			//printf("Will do it later\n");
+			delete_root();
+			return();
+		}*/
+		else
+		{
+			struct node *temp=root;
+			struct  node *p=root;
+			int i =1;
+			while(i < pos)
+			{
+				p=temp;
+				temp = temp->next;
+				i++;
+			}
+			//printf("P = %d\n",p->data);
+			//printf("Temp = %d\n",temp->data);
+			if(pos == 1)
+			{
+				root = temp->next;
+				temp->next = NULL;
+			}
+			else
+			{
+				p->next = temp->next;
+				temp->next = NULL;
+			}
+		count--;
+		}
+		
+	}
+}
+
+void delete_by_key()
+{
+	int pos = 0;
+	int ele;
+	struct node *temp = root;
+	printf("Which element you want to delete\n");
+	scanf("%d",&ele);
+	while(temp != NULL)
+	{
+		pos++;
+		//printf("inside temp->data != ele\n");
+		if(temp->data == ele)
+		{
+			delete_by_key_2(pos);
+			return;
+		}
+		temp=temp->next;
+	}
+	printf("count = %d\n",count);
+	if(pos == count)
+	{
+		printf("Element not found\n");
+		return;
+	}
+	printf("pos = %d\n",pos);
+}
+
+void delete_by_key_2(int pos)
+{
+	if(root == NULL)
+	{
+		printf("No element to delete \n");
+		return;
+	}
+	else
+	{
+		//int pos;
+		//printf("Which position element you want to delete\n");
+		//scanf("%d",&pos);
+		if(pos <= 0)
+		{
+			printf("HaHa... You might be kidding\n");
+		}
+		/*else if(pos == 1)
+		{
+			//printf("Will do it later\n");
+			delete_root();
+			return();
+		}*/
+		else
+		{
+			struct node *temp=root;
+			struct  node *p=root;
+			int i =1;
+			while(i < pos)
+			{
+				p=temp;
+				temp = temp->next;
+				i++;
+			}
+			//printf("P = %d\n",p->data);
+			//printf("Temp = %d\n",temp->data);
+			if(pos == 1)
+			{
+				root = temp->next;
+				temp->next = NULL;
+			}
+			else
+			{
+				p->next = temp->next;
+				temp->next = NULL;
+			}
+		count--;
+		}
+		
+	}	
+}
+void display()
+{
+	struct node *temp=root;
+	int i =1;
+	while(temp != NULL)
+	{
+		printf("%d . %d\n",i,temp->data);
+		temp = temp->next;
+		i++;
+	}
+	
+}
+
+int length()
+{
+	printf("Total nodes = %d\n",count);
+	return count;	
+	
+}
+
+
+void main()
+{
+	int i =1;
+	for(i=1;i<=5;i++)
+	{
+		append();
+	}
+	display();
+	length();
+	/*insert_between();
+	display();
+	insert_in_begining();
+	display(); */
+	delete_by_pos();
+	display();
+	//delete_root();
+	delete_by_key();
+	display();
+}
