@@ -1,0 +1,174 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+
+struct node
+{
+	int data;
+	struct node *left;
+	struct node *right; 
+};
+
+struct node *root = NULL;
+
+int count=0;
+
+void append()
+{
+	struct node *temp;
+	temp = (struct node*)malloc(sizeof(struct node));
+	printf("Enter data\n");
+	scanf("%d",&temp->data);
+	temp->left = NULL;
+	temp->right = NULL;
+	if(root == NULL)
+	{
+		root = temp;
+	}
+	else
+	{
+		struct node *cur=root;
+		struct node *p;
+		while(cur)
+		{
+			p = cur;
+			if(cur->data == temp->data)
+			{
+				printf("Duplicate value not allowed in BST\n");
+				break;
+			}
+			else if(cur->data < temp->data)
+			{
+				cur = cur->right;
+			}
+			else
+			{
+				cur = cur->left;
+			}
+		}
+		if(p->data < temp->data)
+		{
+			p->right = temp;
+		}
+		else if(p->data > temp->data)
+		{
+			p->left = temp;
+		}
+		//else
+		//{
+		//	printf("Duplicatedata not allowed in bst\n");
+		//	return;
+		//}
+	}
+	count++;
+}
+
+void inorder(struct node *trav)
+{
+	if(trav == NULL)
+	{
+		return;
+	}
+	else
+	{
+		inorder(trav->left);
+		printf("%d\n",trav->data);
+		inorder(trav->right);
+	}
+}
+
+int length()
+{
+	printf("Nodes  = %d\n",count);
+	return count;
+}
+
+
+void delete_leaf()
+{
+	int ele;
+	printf("Which element you want to delete\n");
+	scanf("%d",&ele);
+	struct node *p;
+	//printf("1");
+	struct node *cur=root;
+	//printf("2");
+	while(cur->data != ele)
+	{
+		//printf("3");
+		p=cur;
+		if(cur->data < ele)
+		{
+			cur = cur->right;
+		}
+		else
+		{
+			cur = cur->left;
+		}
+	}
+	//printf("cur->data = %d\n",cur->data);
+	if(cur == p->right)
+	p->right = NULL;
+	else
+	p->left = NULL;
+	count--;
+}
+
+void delete_one_child()
+{
+	int ele;
+	printf("Which element you want to delete\n");
+	scanf("%d",&ele);
+	struct node *cur = root;
+	struct node *p;
+	while(cur->data != ele)
+	{
+		p=cur;
+		if(ele > cur->data)
+		{
+			cur = cur->right;
+		}
+		else
+		{
+			cur = cur->left;
+		}
+	}
+	if(cur->left != NULL)
+	{
+		if(cur == p->right)
+		{
+			p->right = cur->left;
+			cur->left = NULL;
+		}
+		else
+		{
+			p->left = cur->left;
+			cur->left = NULL;
+		}
+	}
+	else if(cur->right != NULL)
+	{
+		if(cur == p->right)
+		{
+			p->right = cur->right;
+			cur->right = NULL;
+		}
+		else
+		{
+			p->left = cur->right;
+			cur->right = NULL;
+		}
+	}
+}
+void main()
+{
+	int i = 1;
+	for(i=1;i<=5;i++)
+	{
+		append();
+	}
+	inorder(root);
+	//delete_leaf();
+	delete_one_child();
+	inorder(root);
+}
